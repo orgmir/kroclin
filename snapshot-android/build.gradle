@@ -1,0 +1,20 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        minSdkVersion 21
+    }
+}
+
+dependencies {
+    implementation project(':snapshot')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'com.squareup.radiography:radiography:2.0.0'
+
+    testImplementation 'junit:junit:4.13'
+}
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

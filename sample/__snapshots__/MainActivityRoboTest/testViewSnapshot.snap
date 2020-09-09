@@ -1,0 +1,5 @@
+ConstraintLayout:
+window-focus:false
+ ConstraintLayout { 0×0px }
+ ├─TextView { id:textView1, 0×0px, text:"Oh hi there" }
+ ╰─TextView { id:textView2, 0×0px, text:"Hope this messsage reaches you safely." }

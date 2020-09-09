@@ -1,0 +1,6 @@
+rootProject.name = "kroclin"
+
+include ':snapshot'
+include ':snapshot-android'
+
+include ':sample'
