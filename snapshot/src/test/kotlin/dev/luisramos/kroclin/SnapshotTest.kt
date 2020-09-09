@@ -1,6 +1,6 @@
 package dev.luisramos.kroclin
 
-import dev.luisramos.kroclin.extensions.assertSnapshotAsLines
+import dev.luisramos.kroclin.extensions.assertSnapshot
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
@@ -31,8 +31,30 @@ class SnapshotTest {
             versions of Lorem Ipsum.
         """.trimIndent()
 
-		text.assertSnapshotAsLines()
+		try {
+			text.assertSnapshot()
+		} catch (e: AssertionError) {
+			// test fails on new created snapshot
+		}
 
 		assertThat(Files.exists(file), `is`(true))
+	}
+
+	@Test
+	fun `list of data objects should be saved`() {
+		data class Potato(val size: Int)
+
+		val potatoes = listOf(Potato(1), Potato(2), Potato(3))
+
+		potatoes.assertSnapshot()
+	}
+
+	@Test
+	fun `multiple asserts per test should work`() {
+		val sacredTexts = listOf("text1", "text2", "text3")
+		sacredTexts.assertSnapshot()
+
+		val notSoSacredTests = listOf("text5", "text4", "text3")
+		notSoSacredTests.assertSnapshot()
 	}
 }

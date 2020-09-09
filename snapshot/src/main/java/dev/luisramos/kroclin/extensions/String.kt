@@ -20,4 +20,4 @@ fun stringLinesDiffing() = Diffing(
     }
 )
 
-fun String.assertSnapshotAsLines() = linesSnapshot().assertSnapshot(this)
+fun String.assertSnapshot() = linesSnapshot().assertSnapshot(this)

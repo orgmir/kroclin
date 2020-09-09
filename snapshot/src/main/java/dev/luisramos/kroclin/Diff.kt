@@ -2,13 +2,18 @@ package dev.luisramos.kroclin
 
 import dev.luisramos.kroclin.Difference.Which
 
+/**
+ * This is a direct translation from Swift to Kotlin. Check out
+ * https://github.com/pointfreeco/swift-snapshot-testing/blob/main/Sources/SnapshotTesting/Diff.swift
+ */
+
 data class Difference<T>(
     val elements: List<T>,
     val which: Which
 ) {
-    enum class Which {
-        FIRST, SECOND, BOTH
-    }
+	enum class Which {
+		FIRST, SECOND, BOTH
+	}
 }
 
 private data class OverlapAcc(
@@ -20,52 +25,52 @@ private data class OverlapAcc(
 
 @OptIn(ExperimentalStdlibApi::class)
 fun <T : Any> diff(first: List<T>, second: List<T>): List<Difference<T>> {
-    val indexesOf = mutableMapOf<T, Array<Int>>()
-    first.forEachIndexed { index, item ->
-        indexesOf[item] = (indexesOf[item] ?: emptyArray()) + index
-    }
+	val indexesOf = mutableMapOf<T, Array<Int>>()
+	first.forEachIndexed { index, item ->
+		indexesOf[item] = (indexesOf[item] ?: emptyArray()) + index
+	}
 
-    val sub = second.scanIndexed(OverlapAcc()) { index, sub, item ->
-        indexesOf[item].orEmpty().scan(
+	val sub = second.scanIndexed(OverlapAcc()) { index, sub, item ->
+		indexesOf[item].orEmpty().scan(
             OverlapAcc(first = sub.first, second = sub.second, length = sub.length)
         ) { innerSub, firstIndex ->
-            val newOverlap = innerSub.overlap.toMutableMap()
-            newOverlap[firstIndex] = (sub.overlap[firstIndex - 1] ?: 0) + 1
-            val newLength = newOverlap[firstIndex]
-            if (newLength != null && newLength > sub.length) {
-                OverlapAcc(
+			val newOverlap = innerSub.overlap.toMutableMap()
+			newOverlap[firstIndex] = (sub.overlap[firstIndex - 1] ?: 0) + 1
+			val newLength = newOverlap[firstIndex]
+			if (newLength != null && newLength > sub.length) {
+				OverlapAcc(
                     newOverlap,
                     firstIndex - newLength + 1,
                     index - newLength + 1,
                     newLength
                 )
-            } else {
-                innerSub.copy(overlap = newOverlap)
-            }
-        }.last()
-    }.last()
+			} else {
+				innerSub.copy(overlap = newOverlap)
+			}
+		}.last()
+	}.last()
     val (_, firstIndex, secondIndex, length) = sub
 
-    return if (length == 0) {
-        val firstDiff = if (first.isEmpty()) emptyList() else listOf(Difference(first, Which.FIRST))
-        val secondDiff =
-            if (second.isEmpty()) emptyList() else listOf(Difference(second, Which.SECOND))
-        firstDiff + secondDiff
-    } else {
-        val firstDiff = diff(first.slice(0 until firstIndex), second.slice(0 until secondIndex))
-        val middleDiff =
-            listOf(
+	return if (length == 0) {
+		val firstDiff = if (first.isEmpty()) emptyList() else listOf(Difference(first, Which.FIRST))
+		val secondDiff =
+			if (second.isEmpty()) emptyList() else listOf(Difference(second, Which.SECOND))
+		firstDiff + secondDiff
+	} else {
+		val firstDiff = diff(first.slice(0 until firstIndex), second.slice(0 until secondIndex))
+		val middleDiff =
+			listOf(
                 Difference(
                     first.slice(firstIndex until first.size).slice(0 until length),
                     Which.BOTH
                 )
             )
-        val lastDiff = diff(
+		val lastDiff = diff(
             first.slice(firstIndex + length until first.size),
             second.slice(secondIndex + length until second.size)
         )
-        return firstDiff + middleDiff + lastDiff
-    }
+		return firstDiff + middleDiff + lastDiff
+	}
 }
 
 private const val FIGURE_SPACE = "\u2007"
@@ -87,11 +92,11 @@ fun hunkOf(index: Int = 0, length: Int = 0, lines: List<String> = emptyList()) =
 )
 
 val Hunk.patchMark: String
-    get() {
-        val firstMark = "-${firstIndex + 1}$firstLength"
-        val secondMark = "+${secondIndex + 1}$secondLength"
-        return "@@ $firstMark $secondMark @@"
-    }
+	get() {
+		val firstMark = "-${firstIndex + 1}$firstLength"
+		val secondMark = "+${secondIndex + 1}$secondLength"
+		return "@@ $firstMark $secondMark @@"
+	}
 
 operator fun Hunk.plus(rhs: Hunk): Hunk = Hunk(
     firstIndex = firstIndex + rhs.firstIndex,
@@ -102,13 +107,13 @@ operator fun Hunk.plus(rhs: Hunk): Hunk = Hunk(
 )
 
 fun chunk(diffs: List<Difference<String>>, context: Int = 4): List<Hunk> {
-    fun prepending(prefix: String): (String) -> String = {
-        prefix + it + if (it.endsWith(" ")) "¬" else ""
-    }
+	fun prepending(prefix: String): (String) -> String = {
+		prefix + it + if (it.endsWith(" ")) "¬" else ""
+	}
 
-    val changed: (Hunk) -> Boolean = { hunk ->
-        hunk.lines.any { it.startsWith("-") || it.startsWith("+") }
-    }
+	val changed: (Hunk) -> Boolean = { hunk ->
+		hunk.lines.any { it.startsWith("-") || it.startsWith("+") }
+	}
 
     val (hunk, hunks) = diffs.scan(Hunk() to emptyList<Hunk>()) { cursor, diff ->
         val (current, hunks) = cursor
@@ -158,6 +163,6 @@ fun chunk(diffs: List<Difference<String>>, context: Int = 4): List<Hunk> {
         }
     }.last()
 
-    return if (changed(hunk)) hunks + hunk else hunks
+	return if (changed(hunk)) hunks + hunk else hunks
 }
 

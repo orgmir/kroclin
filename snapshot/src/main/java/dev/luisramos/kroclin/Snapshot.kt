@@ -12,6 +12,8 @@ data class Snapshot<T, S>(
 	val snapshot: (T) -> S
 )
 
+private val idMapCounter = mutableMapOf<String, Int>()
+
 fun <T, S> Snapshot<T, S>.assertSnapshot(value: T) {
 	//TODO support override record mode
 
@@ -36,18 +38,21 @@ fun <T, S> Snapshot<T, S>.assertSnapshot(value: T) {
 
 	if (!Files.exists(filePath)) {
 		// first time taking a snapshot, save this
-		Files.createFile(filePath).toFile().writeBytes(diffing.toData(diffable))
+		val file = Files.createFile(filePath).toFile()
+		file.writeBytes(diffing.toData(diffable))
+		val errorMessage =
+			"\n📷 Failing test since a new snapshot has been recorded.\n\nSnapshot path: ${file.absolutePath}\n\n"
+		throw AssertionError(errorMessage)
 	} else {
 		val file = filePath.toFile()
 		val data = file.readBytes()
 		val reference = diffing.fromData(data)
 		val failure = diffing.diff(reference, diffable)
-		if (failure.isEmpty()) {
-			return
+		if (failure.isNotEmpty()) {
+			val errorMessage =
+				"\nSnapshot does not match reference.\n\nSnapshot path: ${file.absolutePath}\n\n$failure"
+			throw AssertionError(errorMessage)
 		}
-		val errorMessage =
-			"\nSnapshot does not match reference.\n\nSnapshot path: ${file.absolutePath}\n\n$failure"
-		throw AssertionError(errorMessage)
 	}
 }
 
@@ -64,12 +69,19 @@ private fun <T, S> Snapshot<T, S>.getDirPath(): Pair<Path, String> {
 					|| it.fileName == "SnapshotTest.kt"
 		}
 
-	val fileName = callerStacktrace.fileName
+	val className = callerStacktrace.fileName
 		.orEmpty()
 		.removeSuffix(".kt")
 		.removeSuffix(".java")
 		.replace(" ", "\\ ")
 	val methodName = callerStacktrace.methodName.orEmpty()
-	val path = packageName.split(".").toTypedArray() + fileName
-	return Paths.get("__snapshots__", *path) to "$methodName.$pathExtension"
+	val path = packageName.split(".").toTypedArray() + className
+
+	// support multiple snapshots per test
+	val key = path.joinToString() + methodName
+	val counter = idMapCounter[key]
+	idMapCounter[key] = (counter ?: 0) + 1
+	val id = counter?.let { "_$it" } ?: ""
+
+	return Paths.get("__snapshots__", *path) to "$methodName$id.$pathExtension"
 }
