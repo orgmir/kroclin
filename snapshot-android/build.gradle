@@ -17,4 +17,5 @@ dependencies {
     testImplementation 'junit:junit:4.13'
 }
 
-apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
+// Skip deploying snapshot-android for now
+// apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

@@ -21,8 +21,6 @@ fun <T, S> Snapshot<T, S>.assertSnapshot(value: T) {
 	val filePath = Paths.get(dirPath.toFile().path, fileName)
 	// TODO allow override directory
 
-	// TODO support multiple snapshots per test
-
 	// TODO Android will throw
 	//  java.nio.file.FileSystemException: /__snapshots__: Read-only file system
 	// 	figure out support for instrumentation tests
