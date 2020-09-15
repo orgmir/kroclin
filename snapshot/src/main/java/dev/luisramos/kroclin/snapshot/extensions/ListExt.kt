@@ -1,7 +1,7 @@
-package dev.luisramos.kroclin.extensions
+package dev.luisramos.kroclin.snapshot.extensions
 
-import dev.luisramos.kroclin.Snapshot
-import dev.luisramos.kroclin.assertSnapshot
+import dev.luisramos.kroclin.snapshot.Snapshot
+import dev.luisramos.kroclin.snapshot.assertSnapshot
 
 fun <T> listSnapshot(): Snapshot<List<T>, String> = Snapshot(
 	pathExtension = "txt",

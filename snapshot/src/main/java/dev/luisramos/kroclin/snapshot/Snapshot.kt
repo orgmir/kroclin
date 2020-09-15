@@ -1,4 +1,4 @@
-package dev.luisramos.kroclin
+package dev.luisramos.kroclin.snapshot
 
 import java.io.IOException
 import java.nio.file.FileSystemAlreadyExistsException

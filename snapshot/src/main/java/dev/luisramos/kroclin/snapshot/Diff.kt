@@ -1,6 +1,6 @@
-package dev.luisramos.kroclin
+package dev.luisramos.kroclin.snapshot
 
-import dev.luisramos.kroclin.Difference.Which
+import dev.luisramos.kroclin.snapshot.Difference.Which
 
 /**
  * This is a direct translation from Swift to Kotlin. Check out

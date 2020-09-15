@@ -1,4 +1,4 @@
-package dev.luisramos.kroclin
+package dev.luisramos.kroclin.snapshot
 
 data class Diffing<T>(
     val toData: (T) -> ByteArray,

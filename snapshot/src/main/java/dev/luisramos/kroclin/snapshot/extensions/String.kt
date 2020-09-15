@@ -1,6 +1,6 @@
-package dev.luisramos.kroclin.extensions
+package dev.luisramos.kroclin.snapshot.extensions
 
-import dev.luisramos.kroclin.*
+import dev.luisramos.kroclin.snapshot.*
 
 fun linesSnapshot(): Snapshot<String, String> = Snapshot(
     pathExtension = "txt",

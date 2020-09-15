@@ -1,6 +1,6 @@
 package com.example.kroclin
 
-import dev.luisramos.kroclin.extensions.assertSnapshot
+import dev.luisramos.kroclin.snapshot.extensions.assertSnapshot
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test

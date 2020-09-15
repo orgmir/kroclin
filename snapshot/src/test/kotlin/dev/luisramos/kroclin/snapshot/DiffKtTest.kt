@@ -1,4 +1,4 @@
-package dev.luisramos.kroclin
+package dev.luisramos.kroclin.snapshot
 
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
