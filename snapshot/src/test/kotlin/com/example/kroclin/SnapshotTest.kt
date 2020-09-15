@@ -1,4 +1,4 @@
-package dev.luisramos.kroclin
+package com.example.kroclin
 
 import dev.luisramos.kroclin.extensions.assertSnapshot
 import org.hamcrest.CoreMatchers.`is`
@@ -12,8 +12,8 @@ class SnapshotTest {
 	fun `assertSnapshot should save file with correct contents`() {
 		val file = Paths.get(
 			"__snapshots__",
-			"dev",
-			"luisramos",
+			"com",
+			"example",
 			"kroclin",
 			"SnapshotTest",
 			"assertSnapshot should save file with correct contents.txt"

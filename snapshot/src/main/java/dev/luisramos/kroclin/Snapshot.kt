@@ -61,19 +61,10 @@ private fun <T, S> Snapshot<T, S>.getDirPath(): Pair<Path, String> {
 	// check for that
 	val callerStacktrace = Thread.currentThread().stackTrace
 		.drop(1)
-		.first {
-			!it.className.contains(packageName)
-					|| it.className.contains("$packageName.sample")
-					|| it.fileName == "SnapshotTest.kt"
-		}
+		.first { !it.className.contains(packageName) }
 
-	val className = callerStacktrace.fileName
-		.orEmpty()
-		.removeSuffix(".kt")
-		.removeSuffix(".java")
-		.replace(" ", "\\ ")
 	val methodName = callerStacktrace.methodName.orEmpty()
-	val path = packageName.split(".").toTypedArray() + className
+	val path = callerStacktrace.className.split(".").toTypedArray()
 
 	// support multiple snapshots per test
 	val key = path.joinToString() + methodName
