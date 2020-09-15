@@ -1,4 +1,4 @@
-package dev.luisramos.kroclin.sample
+package com.example.kroclin.sample
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

@@ -1,7 +1,8 @@
-package dev.luisramos.kroclin.sample
+package com.example.kroclin.sample
 
 import android.view.View
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import com.example.kroclin.sample.MainActivity
 import dev.luisramos.kroclin.snapshot.android.assertSnapshot
 import org.junit.Rule
 import org.junit.Test

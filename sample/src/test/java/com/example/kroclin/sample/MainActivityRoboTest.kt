@@ -1,4 +1,4 @@
-package dev.luisramos.kroclin.sample
+package com.example.kroclin.sample
 
 import android.view.LayoutInflater
 import androidx.test.platform.app.InstrumentationRegistry
