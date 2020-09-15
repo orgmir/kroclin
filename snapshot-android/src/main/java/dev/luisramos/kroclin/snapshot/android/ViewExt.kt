@@ -1,9 +1,9 @@
 package dev.luisramos.kroclin.snapshot.android
 
 import android.view.View
-import dev.luisramos.kroclin.Snapshot
-import dev.luisramos.kroclin.assertSnapshot
-import dev.luisramos.kroclin.extensions.stringLinesDiffing
+import dev.luisramos.kroclin.snapshot.Snapshot
+import dev.luisramos.kroclin.snapshot.assertSnapshot
+import dev.luisramos.kroclin.snapshot.extensions.stringLinesDiffing
 import radiography.ViewStateRenderers.DefaultsIncludingPii
 import radiography.scan
 
